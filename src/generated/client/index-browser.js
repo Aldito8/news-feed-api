@@ -136,7 +136,7 @@ exports.Prisma.PostsScalarFieldEnum = {
 
 exports.Prisma.FollowsScalarFieldEnum = {
   follower_id: 'follower_id',
-  following_id: 'following_id',
+  followee_id: 'followee_id',
   created_at: 'created_at'
 };
 

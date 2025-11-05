@@ -108,7 +108,7 @@ exports.Prisma.PostsScalarFieldEnum = {
 
 exports.Prisma.FollowsScalarFieldEnum = {
   follower_id: 'follower_id',
-  following_id: 'following_id',
+  followee_id: 'followee_id',
   created_at: 'created_at'
 };
 
@@ -157,7 +157,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -167,7 +167,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -176,13 +175,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel users {\n  id            Int      @id @default(autoincrement())\n  username      String   @unique\n  password_hash String\n  created_at    DateTime @default(now())\n\n  posts posts[]\n\n  follower  follows[] @relation(\"user_followers\")\n  following follows[] @relation(\"user_following\")\n}\n\nmodel posts {\n  id         Int      @id @default(autoincrement())\n  user_id    Int\n  content    String\n  created_at DateTime @default(now())\n\n  user users @relation(fields: [user_id], references: [id])\n}\n\nmodel follows {\n  follower_id  Int\n  following_id Int\n  created_at   DateTime @default(now())\n\n  follower  users @relation(\"user_followers\", fields: [follower_id], references: [id])\n  following users @relation(\"user_following\", fields: [following_id], references: [id])\n\n  @@id([follower_id, following_id])\n}\n",
-  "inlineSchemaHash": "250597132e5c60212e6dcb39ff6d32dafa38d7bd48f671449671560dbfa2824a",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel users {\n  id            Int      @id @default(autoincrement())\n  username      String   @unique\n  password_hash String\n  created_at    DateTime @default(now())\n\n  posts posts[]\n\n  follower follows[] @relation(\"user_follower\")\n  followee follows[] @relation(\"user_followee\")\n}\n\nmodel posts {\n  id         Int      @id @default(autoincrement())\n  user_id    Int\n  content    String\n  created_at DateTime @default(now())\n\n  user users @relation(fields: [user_id], references: [id])\n}\n\nmodel follows {\n  follower_id Int\n  followee_id Int\n  created_at  DateTime @default(now())\n\n  follower users @relation(\"user_follower\", fields: [follower_id], references: [id])\n  followee users @relation(\"user_followee\", fields: [followee_id], references: [id])\n\n  @@id([follower_id, followee_id])\n}\n",
+  "inlineSchemaHash": "3843a137394eecda0e8f42031e8c04a5559065eb559c4b6459bb0e34641fd6d4",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"users\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"posts\",\"kind\":\"object\",\"type\":\"posts\",\"relationName\":\"postsTousers\"},{\"name\":\"follower\",\"kind\":\"object\",\"type\":\"follows\",\"relationName\":\"user_followers\"},{\"name\":\"following\",\"kind\":\"object\",\"type\":\"follows\",\"relationName\":\"user_following\"}],\"dbName\":null},\"posts\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"users\",\"relationName\":\"postsTousers\"}],\"dbName\":null},\"follows\":{\"fields\":[{\"name\":\"follower_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"following_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"follower\",\"kind\":\"object\",\"type\":\"users\",\"relationName\":\"user_followers\"},{\"name\":\"following\",\"kind\":\"object\",\"type\":\"users\",\"relationName\":\"user_following\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"users\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"posts\",\"kind\":\"object\",\"type\":\"posts\",\"relationName\":\"postsTousers\"},{\"name\":\"follower\",\"kind\":\"object\",\"type\":\"follows\",\"relationName\":\"user_follower\"},{\"name\":\"followee\",\"kind\":\"object\",\"type\":\"follows\",\"relationName\":\"user_followee\"}],\"dbName\":null},\"posts\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"users\",\"relationName\":\"postsTousers\"}],\"dbName\":null},\"follows\":{\"fields\":[{\"name\":\"follower_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"followee_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"follower\",\"kind\":\"object\",\"type\":\"users\",\"relationName\":\"user_follower\"},{\"name\":\"followee\",\"kind\":\"object\",\"type\":\"users\",\"relationName\":\"user_followee\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

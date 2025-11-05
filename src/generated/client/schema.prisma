@@ -16,8 +16,8 @@ model users {
 
   posts posts[]
 
-  follower  follows[] @relation("user_followers")
-  following follows[] @relation("user_following")
+  follower follows[] @relation("user_follower")
+  followee follows[] @relation("user_followee")
 }
 
 model posts {
@@ -30,12 +30,12 @@ model posts {
 }
 
 model follows {
-  follower_id  Int
-  following_id Int
-  created_at   DateTime @default(now())
+  follower_id Int
+  followee_id Int
+  created_at  DateTime @default(now())
 
-  follower  users @relation("user_followers", fields: [follower_id], references: [id])
-  following users @relation("user_following", fields: [following_id], references: [id])
+  follower users @relation("user_follower", fields: [follower_id], references: [id])
+  followee users @relation("user_followee", fields: [followee_id], references: [id])
 
-  @@id([follower_id, following_id])
+  @@id([follower_id, followee_id])
 }

@@ -5,6 +5,10 @@ export async function handleLogin(req: Request, res: Response) {
     try {
         const { username, password } = req.body
         const data = await login(username, password)
+        res.cookie("token", data, {
+            sameSite: "strict",
+            maxAge: 24 * 60 * 60 * 1000
+        })
         res.status(200).json({ "token": data })
     } catch (error: any) {
         res.status(400).json({ error: error.message })
