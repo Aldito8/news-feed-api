@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id            Int      @id @default(autoincrement())
+  username      String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
+
+  posts posts[]
+
+  follower  follows[] @relation("user_followers")
+  following follows[] @relation("user_following")
+}
+
+model posts {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  content    String
+  created_at DateTime @default(now())
+
+  user users @relation(fields: [user_id], references: [id])
+}
+
+model follows {
+  follower_id  Int
+  following_id Int
+  created_at   DateTime @default(now())
+
+  follower  users @relation("user_followers", fields: [follower_id], references: [id])
+  following users @relation("user_following", fields: [following_id], references: [id])
+
+  @@id([follower_id, following_id])
+}
