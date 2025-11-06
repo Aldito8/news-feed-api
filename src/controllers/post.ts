@@ -3,9 +3,10 @@ import { createPost, getFeed } from "../services/post";
 
 export async function handleGetFeed(req: Request, res: Response) {
     try {
-        const { page, limit } = req.query
+        const user_id = (req as any).user.id
 
-        const data = await getFeed(Number(page), Number(limit))
+        const { page, limit } = req.query
+        const data = await getFeed(user_id, Number(page), Number(limit))
         res.status(200).json({ data: data })
     } catch (error: any) {
         res.status(400).json({ "error": error.message })

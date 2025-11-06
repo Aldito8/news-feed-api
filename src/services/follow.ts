@@ -33,7 +33,7 @@ export const unfollow = async (follower_id: number, followee_id: number) => {
         }
     })
 
-    if (exist) {
+    if (!exist) {
         throw { code: 400, message: "not following this user" }
     }
 
@@ -46,20 +46,20 @@ export const unfollow = async (follower_id: number, followee_id: number) => {
     return data
 }
 
-// export const getFollower = async (user_id: number) => {
-//     const data = await prisma.follows.findMany({
-//         where: { followee_id: user_id },
-//         include: { follower: true }
-//     })
+export const getFollower = async (user_id: number) => {
+    const data = await prisma.follows.findMany({
+        where: { followee_id: user_id },
+        include: { follower: true }
+    })
 
-//     return data
-// }
+    return data
+}
 
-// export const getFollowing = async (user_id: number) => {
-//     const data = await prisma.follows.findMany({
-//         where: { follower_id: user_id },
-//         include: { followee: true }
-//     })
+export const getFollowee = async (user_id: number) => {
+    const data = await prisma.follows.findMany({
+        where: { follower_id: user_id },
+        include: { followee: true }
+    })
 
-//     return data
-// }
+    return data
+}
