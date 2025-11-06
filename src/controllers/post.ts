@@ -3,7 +3,9 @@ import { createPost, getFeed } from "../services/post";
 
 export async function handleGetFeed(req: Request, res: Response) {
     try {
-        const data = await getFeed()
+        const { page, limit } = req.query
+
+        const data = await getFeed(Number(page), Number(limit))
         res.status(200).json({ data: data })
     } catch (error: any) {
         res.status(400).json({ "error": error.message })
@@ -12,8 +14,10 @@ export async function handleGetFeed(req: Request, res: Response) {
 
 export async function handleCreateFeed(req: Request, res: Response) {
     try {
+        const user_id = (req as any).user.id
+
         const { content } = req.body
-        const data = await createPost(1, content)
+        const data = await createPost(Number(user_id), content)
         res.status(200).json({ data: data })
     } catch (error: any) {
         res.status(400).json({ "error": error.message })

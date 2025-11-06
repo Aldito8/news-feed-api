@@ -1,7 +1,10 @@
 import { prisma } from "../prisma/client"
 
-export const getFeed = async () => {
-    const data = await prisma.posts.findMany()
+export const getFeed = async (page: number, limit: number) => {
+    const data = await prisma.posts.findMany({
+        take: limit,
+        skip: page
+    })
     return data
 }
 

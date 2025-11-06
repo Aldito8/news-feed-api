@@ -5,10 +5,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     try {
         const token = req.cookies.token
 
-        if (!token) throw {
-            code: 401,
-            error: "Unauthorized: Authentication failed(invalid token)."
-        }
+        if (!token) throw Error("Unauthorized: Authentication failed(invalid token).")
 
         const decode = verifyToken(token);
         (req as any).user = decode
