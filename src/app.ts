@@ -1,12 +1,14 @@
 import express from 'express'
+import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
 import routeAuth from './routes/auth'
 import routePost from './routes/post'
 import routeFollow from './routes/follow'
 import { corsOrigin } from './middleware/cors'
 
+dotenv.config()
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT
 
 app.use(corsOrigin)
 app.use(express.json())
