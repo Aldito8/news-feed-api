@@ -5,7 +5,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     try {
         const token = req.cookies.token
 
-        if (!token) throw Error("Unauthorized: Authentication failed(invalid token).")
+        if (!token) throw { code: 401, message: "Unauthorized: Authentication failed(invalid token)." }
 
         const decode = verifyToken(token);
         (req as any).user = decode
@@ -13,6 +13,9 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
         next()
 
     } catch (error: any) {
-        res.status(400).json({ error: error.message })
+        res.status(error.code).json({
+            code: error.code,
+            error: error.message
+        })
     };
 };

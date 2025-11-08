@@ -7,12 +7,9 @@ export const login = async (username: string, password: string) => {
         where: { username }
     })
 
-    if (!user) throw Error("user not found")
-
+    if (!user) throw { code: 400, message: "username or password is wrong" }
     const isMatch = await bcrypt.compare(password, user.password_hash)
-
-    if (!isMatch) throw Error("username or password is wrong")
-
+    if (!isMatch) throw { code: 400, message: "username or password is wrong" }
     const token = signToken({ id: user.id, username: user.username })
 
     return token
@@ -21,15 +18,11 @@ export const login = async (username: string, password: string) => {
 export const register = async (username: string, password: string) => {
 
     const isMatch = await prisma.users.findUnique({
-        where: {
-            username
-        }
+        where: { username }
     })
 
-    if (isMatch) throw Error("username already taken")
-
+    if (isMatch) throw { code: 409, message: "username already exist" }
     const password_hash = await bcrypt.hash(password, 10)
-
     const user = await prisma.users.create({
         data: {
             username,

@@ -2,8 +2,14 @@ import { prisma } from "../prisma/client"
 
 export const follow = async (follower_id: number, followee_id: number) => {
     if (follower_id === followee_id) {
-        throw { code: 400, message: "cannot follow yourself" }
+        throw { code: 409, message: "cannot follow yourself" }
     }
+
+    const user = await prisma.users.findUnique({
+        where: { id: followee_id }
+    })
+
+    if (!user) throw { code: 404, message: "user not found" }
 
     const exist = await prisma.follows.findUnique({
         where: {
@@ -11,9 +17,7 @@ export const follow = async (follower_id: number, followee_id: number) => {
         }
     })
 
-    if (exist) {
-        throw { code: 409, message: "already follow this user" }
-    }
+    if (exist) throw { code: 409, message: "already follow this user" }
 
     const data = await prisma.follows.create({
         data: {
