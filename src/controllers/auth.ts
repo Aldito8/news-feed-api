@@ -14,8 +14,8 @@ export async function handleLogin(req: Request, res: Response) {
         })
         res.status(200).json({ "token": data })
     } catch (error: any) {
-        res.status(error.code).json({
-            code: error.code,
+        res.status(error.code || 500).json({
+            code: error.code || 500,
             error: error.message
         })
     }
@@ -29,8 +29,8 @@ export async function handleRegister(req: Request, res: Response) {
         const data = await register(username, password)
         res.status(201).json(data)
     } catch (error: any) {
-        res.status(error.code).json({
-            code: error.code,
+        res.status(error.code || 500).json({
+            code: error.code || 500,
             error: error.message
         })
     }
